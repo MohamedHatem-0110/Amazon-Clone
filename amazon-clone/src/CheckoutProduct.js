@@ -2,8 +2,7 @@ import React from "react";
 import { useStateValue } from "./StateProvider";
 import { motion, AnimatePresence, useIsPresent } from "framer-motion";
 
-function CheckoutProduct({ id, image, title, price, rating }) {
-  console.log("lol");
+function CheckoutProduct({ id, image, title, price, rating, hideButton }) {
   const [{ basket }, dispatch] = useStateValue();
   const isPresent = useIsPresent();
   const removeFromBasket = () => {
@@ -36,9 +35,11 @@ function CheckoutProduct({ id, image, title, price, rating }) {
               <p>⭐</p>
             ))}
         </motion.div>
-        <motion.button onClick={removeFromBasket}>
-          Remove from Basket
-        </motion.button>
+        {!hideButton && (
+          <motion.button onClick={removeFromBasket}>
+            Remove from Basket
+          </motion.button>
+        )}
       </motion.div>
     </motion.div>
   );

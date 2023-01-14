@@ -40,3 +40,9 @@
   width: 300px;
   margin-left: 80%;
 }
+.payment__details > form {
+  max-width: 400px;
+}
+.payment__details > h3 {
+  padding-bottom: 20px;
+}

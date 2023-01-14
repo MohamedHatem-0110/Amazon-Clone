@@ -3,8 +3,9 @@ import React from "react";
 import "./Product.css";
 import { useStateValue } from "./StateProvider";
 import { motion, AnimatePresence } from "framer-motion";
+import { db } from "./firebase";
 function Product({ id, title, image, price, rating }) {
-  const [{ basket }, dispatch] = useStateValue();
+  const [{ basket, user }, dispatch] = useStateValue();
   //console.log(basket);
   const addToBasket = () => {
     dispatch({
@@ -17,11 +18,20 @@ function Product({ id, title, image, price, rating }) {
         rating: rating,
       },
     });
+    db.collection("users")
+      .doc(user?.uid)
+      .collection("basket")
+      .doc("123")
+      .set({ basket: basket });
   };
   return (
     <motion.div
       className="product"
-      whileHover={{ scale: 1.06, boxShadow: "0px 0px 3px rgb(0,0,0)" }}
+      whileHover={{
+        scale: 1.05,
+        boxShadow: "0px 0px 3px rgb(0,0,0)",
+        zIndex: 2,
+      }}
     >
       <div className="product__info">
         <p>{title}</p>

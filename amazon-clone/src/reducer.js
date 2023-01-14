@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { db } from "./firebase";
 export const initialState = {
   basket: [],
   user: null,
@@ -9,7 +11,6 @@ export const getBasketTotal = (basket) =>
 
 export const reducer = (state, action) => {
   console.log(action);
-
   switch (action.type) {
     case "ADD_TO_BASKET":
       let newBasket1 = [...state.basket];
@@ -31,8 +32,21 @@ export const reducer = (state, action) => {
         );
       }
       return { ...state, basket: newBasket };
+    case "EMPTY_BASKET":
+      return { ...state, basket: [] };
     case "SET_USER":
+      var b = db
+        .collection("users")
+        .doc(action.user?.uid)
+        .collection("basket")
+        .doc("123");
+      console.log(b.get());
       return { ...state, user: action.user };
+    case "SET_BASKET":
+      if (action.basket) {
+        return { ...state, basket: action.basket };
+      }
+      return { ...state };
 
     default:
       return state;

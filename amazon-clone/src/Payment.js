@@ -6,8 +6,28 @@ import "./Payment.css";
 import { useStateValue } from "./StateProvider";
 import CurrencyFormat from "react-currency-format";
 import { getBasketTotal } from "./reducer";
+import { useNavigate } from "react-router-dom";
+import { db } from "./firebase";
 function Payment() {
   const [{ basket, user }, dispatch] = useStateValue();
+  const navigate = useNavigate();
+  const date = new Date();
+  const getTimeEpoch = () => {
+    return new Date().getTime().toString();
+  };
+  const handlePay = () => {
+    if (user) {
+      db.collection("users")
+        .doc(user?.uid)
+        .collection("orders")
+        .doc(getTimeEpoch())
+        .set({ basket: basket, amount: getBasketTotal(basket), date: date });
+      dispatch({
+        type: "EMPTY_BASKET",
+      });
+      navigate("/orders");
+    }
+  };
   return (
     <div className="payment">
       <div className="payment__container">
@@ -65,7 +85,9 @@ function Payment() {
               thousandSeparator={true}
               prefix={"$"}
             />
-            <button className="payment__button">Pay Now</button>
+            <button onClick={handlePay} className="payment__button">
+              Pay Now
+            </button>
           </div>
         </div>
       </div>
