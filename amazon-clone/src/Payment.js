@@ -85,9 +85,11 @@ function Payment() {
               thousandSeparator={true}
               prefix={"$"}
             />
-            <button onClick={handlePay} className="payment__button">
-              Pay Now
-            </button>
+            {basket.length > 0 && (
+              <button onClick={handlePay} className="payment__button">
+                Pay Now
+              </button>
+            )}
           </div>
         </div>
       </div>
